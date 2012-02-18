@@ -75,7 +75,7 @@ public class JavaLanguage {
 	}
 	
 	public static JavaCodeBlock _throw(JavaObjectInstantiation jcb) {
-		return new RawJavaCodeBlock().from("throw " + jcb);
+		return new RawJavaCodeBlock().from("throw ").append(jcb).appendRaw(";");
 	}
 	
 	public static JavaCodeBlock doNothing() {
