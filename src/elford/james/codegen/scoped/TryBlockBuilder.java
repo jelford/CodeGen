@@ -9,7 +9,7 @@ public class TryBlockBuilder implements CatchBlock {
 	JavaScopedBlock codeBlock;
 	
 	public TryBlockBuilder(JavaCodeBlock jcb) {
-		this.codeBlock = new RawJavaCodeBlock().from("try {").append(jcb).appendRaw("; }");
+		this.codeBlock = new RawJavaCodeBlock().from("try { ").append(jcb).appendRaw(jcb.terminate()).appendRaw("}");
 	}
 
 	public CatchBlockBuilder _catch(ClassName exceptionType, Identifier label) {
@@ -23,8 +23,44 @@ public class TryBlockBuilder implements CatchBlock {
 	}
 
 	@Override
-	public JavaScopedBlock _finally(JavaCodeBlock jcb) {
-		this.codeBlock.append(new RawJavaCodeBlock().from(" finally { ").append(jcb).appendRaw(" }"));
-		return this.codeBlock;
+	public JavaScopedBlock _finally(final JavaCodeBlock jcb) {
+		return new JavaScopedBlock() {
+			StringBuilder code = new StringBuilder(codeBlock.toString()).append(" finally { ").append(jcb).append("}");
+
+			@Override
+			public String terminate() {
+				return "";
+			}
+
+			@Override
+			public JavaCodeBlock append(JavaCodeBlock j) {
+				code.append(j);
+				return this;
+			}
+			
+			@Override
+			public String toString() {
+				return code.toString();
+			}
+
+			@Override
+			public JavaCodeBlock append(String s) {
+				code.append(s);
+				return this;
+			}
+			
+		};
+	}
+
+	@Override
+	public String terminate() {
+		System.out.println("Terminating a try-block");
+		return "";
+	}
+
+	@Override
+	public TryBlockBuilder append(String s) {
+		codeBlock.append(s);
+		return this;
 	}
 }

@@ -12,4 +12,5 @@ package elford.james.codegen;
  */
 public interface JavaCodeBuilder {
 	JavaCodeBlock append(JavaCodeBlock j);
+	JavaCodeBlock append(String s);
 }

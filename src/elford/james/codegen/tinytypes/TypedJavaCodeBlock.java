@@ -27,4 +27,15 @@ public class TypedJavaCodeBlock implements JavaCodeBlock {
 		return this;
 	}
 
+	@Override
+	public String terminate() {
+		return ";";
+	}
+
+	@Override
+	public TypedJavaCodeBlock append(String s) {
+		wrappedJcb.append(s);
+		return this;
+	}
+
 }

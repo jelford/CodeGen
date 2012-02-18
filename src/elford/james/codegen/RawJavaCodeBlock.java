@@ -30,7 +30,7 @@ public class RawJavaCodeBlock implements JavaCodeBlock, JavaCodeBuilder, JavaSco
 		for (JavaCodeBlock jcb : expressions) {
 			this.append(jcb);
 			if (++i < expressions.length)
-				this.code.append(";");
+				this.code.append(jcb.terminate());
 		}
 	}
 
@@ -59,6 +59,13 @@ public class RawJavaCodeBlock implements JavaCodeBlock, JavaCodeBuilder, JavaSco
 		return this;
 	}
 
+	@Override
+	public String terminate() {
+		return "; ";
+	}
 
-
+	@Override
+	public JavaCodeBlock append(String s) {
+		return this.appendRaw(s);
+	}
 }
