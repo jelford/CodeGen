@@ -1,5 +1,7 @@
 package elford.james.codegen;
 
+import elford.james.codegen.scoped.JavaScopedBlock;
+
 
 /**
  * Concrete implementation of a JavaCodeBlock. Provides
@@ -9,7 +11,7 @@ package elford.james.codegen;
  * @author james
  *
  */
-public class RawJavaCodeBlock implements JavaCodeBlock, JavaCodeBuilder {
+public class RawJavaCodeBlock implements JavaCodeBlock, JavaCodeBuilder, JavaScopedBlock {
 	StringBuilder code;
 
 	@Override

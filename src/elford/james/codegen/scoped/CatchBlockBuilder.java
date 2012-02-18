@@ -26,11 +26,12 @@ public class CatchBlockBuilder implements CatchBlock, JavaScopedBlock {
 		sb.append("catch (");
 		sb.append(type).append(" ").append(exceptionLabel).append(") {");
 		sb.append(jcb);
-		sb.append("; }");
+		sb.append("}");
 		this.code = sb;
 		return this;
 	}
 	
+	@Override
 	public JavaScopedBlock _finally(JavaCodeBlock jcb) {
 		this.code.append(" finally { ").append(jcb).append(" }");
 		return this;

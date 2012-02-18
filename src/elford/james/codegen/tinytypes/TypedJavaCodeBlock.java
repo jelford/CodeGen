@@ -4,16 +4,16 @@ import elford.james.codegen.JavaCodeBlock;
 import elford.james.codegen.RawJavaCodeBlock;
 
 public class TypedJavaCodeBlock implements JavaCodeBlock {
-	private String type;
+	private ClassName type;
 	private JavaCodeBlock wrappedJcb;
 	
-	public TypedJavaCodeBlock(String type, StringBuilder code) {
-		this.wrappedJcb = new RawJavaCodeBlock().from(code);
+	public TypedJavaCodeBlock(ClassName type, JavaCodeBlock value) {
+		this.wrappedJcb = value;
 		this.type = type;
 	}
 
 	public String getType() {
-		return this.type;
+		return this.type.toString();
 	}
 	
 	@Override

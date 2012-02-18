@@ -31,10 +31,14 @@ public class JavaLanguage {
 	public static TryBlockBuilder _try(JavaCodeBlock ... sequence) {
 		JavaCodeBlock jcb = new RawJavaCodeBlock();
 		for(JavaCodeBlock j : sequence) {
-			if (jcb != null)
+			if (j != null)
 				jcb.append(j);
 		}
 		return _try(jcb);
+	}
+	
+	public static RawJavaCodeBlock stringLiteral(String value) {
+		return new RawJavaCodeBlock().prependRaw("\"").appendRaw(value).appendRaw("\"");
 	}
 	
 	public static JavaArrayBuilder array() {
