@@ -21,7 +21,8 @@ import elford.james.codegen.tinytypes.Identifier;
 public class JavaLanguage {
 	
 	public static JavaCodeBlock methodBody(JavaCodeBlock ... expressions) {
-		return new RawJavaCodeBlock(expressions).prependRaw("{").appendRaw("; }");
+		JavaCodeBlock exp = new RawJavaCodeBlock(expressions);
+		return new RawJavaCodeBlock().from("{ ").append(exp).appendRaw(expressions[expressions.length-1].terminate()).appendRaw(" }");
 	}
 	
 	public static TryBlockBuilder _try(JavaCodeBlock jcb) {
@@ -30,9 +31,14 @@ public class JavaLanguage {
 	
 	public static TryBlockBuilder _try(JavaCodeBlock ... sequence) {
 		JavaCodeBlock jcb = new RawJavaCodeBlock();
+		
+		int i = 0;
 		for(JavaCodeBlock j : sequence) {
-			if (j != null)
+			if (j != null) {
 				jcb.append(j);
+				if (++i < sequence.length)
+					jcb.append(j.terminate());
+			}
 		}
 		return _try(jcb);
 	}

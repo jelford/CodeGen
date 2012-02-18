@@ -18,8 +18,7 @@ public class LocalAssignBuilder extends RawJavaCodeBlock {
 			.append(" ")
 			.append(this.identifier)
 			.append(" = ")
-			.append(value)
-			.append("; ");
+			.append(value);
 		
 		return new LocalAssignment(sb);
 	}

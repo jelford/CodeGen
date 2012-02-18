@@ -48,4 +48,16 @@ public class CatchBlockBuilder implements CatchBlock, JavaScopedBlock {
 	public String toString() {
 		return this.code.toString();
 	}
+
+	@Override
+	public String terminate() {
+		System.out.println("terminating a  catchBuilder block");
+		return "";
+	}
+
+	@Override
+	public JavaCodeBlock append(String s) {
+		code.append(s);
+		return this;
+	}
 }
