@@ -1,0 +1,1 @@
+While writing the Please project, I found myself doing an awful lot of hand-writing Java code, in Java. I thought it would be sensible to rip out the things I wrote for that into a separate project, in case I ever needed to write Java in Java again.
