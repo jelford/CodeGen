@@ -26,7 +26,6 @@ public class CheckGeneratedCodeIsAsExpected {
 				
 		);
 		assertThat(jcb.toString(), is(equalTo("{ try { String x = \"hello, world\"; System.out.println(x); } finally { } }")));
-		System.out.println(jcb.toString());
 		
 		Identifier y = new Identifier("y");
 		Identifier z = new Identifier("z");
@@ -36,10 +35,27 @@ public class CheckGeneratedCodeIsAsExpected {
 				set(z).to(CClassName.from("boolean"), x.call("equals").with(y))
 		);
 		assertThat(jcb2.toString(), is(equalTo("{ Integer x = 5; int y = 6; boolean z = x.equals(y);  }")));
+	}
+	
+	@Test
+	public void canCorrectlyWriteATryFinallyBlock() {
+		Identifier x = new Identifier("x");
+		JavaCodeBlock jcb = _try(
+									x.call("method").with(noArgument())
+								)._finally(doNothing());
 		
-
+		assertThat(jcb.toString(), is(equalTo("try { x.method(); } finally { }")));
+	}
+	
+	@Test
+	public void canCorrectlyWriteATryBlockWithoutFinally() {
+		Identifier x = new Identifier("x");
 		
-		System.out.println(jcb2.toString());
+		JavaCodeBlock jcb1 = _try(doNothing());
+		assertThat(jcb1.toString(), is(equalTo("try { }")));
+		
+		JavaCodeBlock jcb2 = _try(set(x).to(CClassName.from("Integer"), literal(5)));
+		assertThat(jcb2.toString(), is(equalTo("try { Integer x = 5; }")));
 	}
 	
 	
