@@ -42,45 +42,50 @@ public class JavaLanguage {
 		return new JavaArrayBuilder();
 	}
 	
-	//public static MethodArgumentLookupBuilder first(int howMany) {
-	//	return new MethodArgumentLookupBuilder(howMany);
-	//}
-	
-	//public static TerminatingJavaCodeBlock[] valuesFrom(MethodArgument[] args) {
-	//	
-	//	TerminatingJavaCodeBlock[] jcbArray = new TerminatingJavaCodeBlock[args.length];
-	//	for (int i = 0; i < args.length; i++) {
-	//		jcbArray[i] = new RawJavaCodeBlock().from(args[i].toString());
-	//	}
-	//	return jcbArray;
-	//}
-	
-	//public static JavaReturnStatement _return(ClassName type, TerminatingJavaCodeBlock expression) {
-	//	return new JavaReturnStatement(type, expression);
-	//}
 	public static JavaReturnStatement _return(TerminatingJavaCodeBlock expression) {
 		return new JavaReturnStatement(expression);
 	}
 	
-	public static JavaReturnStatement _return(Identifier identifier) {
-		return new JavaReturnStatement(identifier);
+	public static JavaReturnStatement _return(UnterminatedJavacodeBlock ujcb) {
+		return new JavaReturnStatement(ujcb);
 	}
-	
-	//public static JavaReturnStatement _return(Object _) {
-	//	return new JavaReturnStatement(null);
-	//}
 	
 	public static LocalAssignBuilder set(Identifier i) {
 		return new LocalAssignBuilder(i);
 	}
 	
-	//public static JavaObjectInstantiation _new(String type, MethodArgument ... arguments) {
-	//	return new JavaObjectInstantiation(type, arguments);
-	//}
+	public static TerminatingJavaCodeBlock _throw(final ClassName exceptionType, final UnterminatedJavacodeBlock ... args) {
+		return new TerminatingJavaCodeBlock() {
+			
+			@Override
+			public String representTerminating() {
+				StringBuilder sb = new StringBuilder("throw ");
+				sb.append("new ");
+				sb.append(exceptionType.toString());
+				sb.append("(");
+				
+				int i = 0;
+				for (UnterminatedJavacodeBlock tjcb : args) {
+					sb.append(tjcb.representUnterminating());
+					if (++i < args.length)
+						sb.append(", ");
+				}
+				
+				sb.append(");");
+				return sb.toString();
+			}
+		};
+	}
 	
-	//public static TerminatingJavaCodeBlock _throw(JavaObjectInstantiation jcb) {
-	//	return new RawJavaCodeBlock().from("throw ").append(jcb).appendRaw(";");
-	//}
+	public static TerminatingJavaCodeBlock _throw(final Identifier x) {
+		return new TerminatingJavaCodeBlock() {
+			
+			@Override
+			public String representTerminating() {
+				return "throw " + x.toString() + "; ";
+			}
+		};
+	}
 	
 	public static TerminatingJavaCodeBlock doNothing() {
 		return new TerminatingJavaCodeBlock() {
@@ -94,6 +99,14 @@ public class JavaLanguage {
 	
 	public static EmptyMethodArgument noArgument() {
 		return new EmptyMethodArgument();
+	}
+	
+	public static JavaTerminatingCastExpressionBuilder cast(TerminatingJavaCodeBlock jcb) {
+		return new JavaTerminatingCastExpressionBuilder(jcb);
+	}
+	
+	public static JavaUnterminatingCastExpressionBuilder cast(UnterminatedJavacodeBlock ujcb) {
+		return new JavaUnterminatingCastExpressionBuilder(ujcb);
 	}
 	
 	public final static String javaReflectedMethodType = 

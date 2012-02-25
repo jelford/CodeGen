@@ -1,6 +1,9 @@
 package elford.james.codegen;
 
-public class JavaTryBlock implements TerminatingJavaCodeBlock{
+import elford.james.codegen.tinytypes.ClassName;
+import elford.james.codegen.tinytypes.Identifier;
+
+public class JavaTryBlock implements TerminatingJavaCodeBlock, CatchFinallyBuilder {
 	TerminatingJavaCodeBlock enclosedCode;
 
 	public JavaTryBlock(TerminatingJavaCodeBlock jcb) {
@@ -15,8 +18,14 @@ public class JavaTryBlock implements TerminatingJavaCodeBlock{
 		return sb.toString();
 	}
 	
+	@Override
 	public TerminatingJavaCodeBlock _finally(TerminatingJavaCodeBlock jcb) {
 		return new TryFinallyBlock(this, jcb);
+	}
+
+	@Override
+	public CatchBuilder _catch(ClassName from, Identifier x) {
+		return new CatchBuilder(this, from, x);
 	}
 
 }

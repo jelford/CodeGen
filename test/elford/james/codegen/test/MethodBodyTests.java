@@ -9,6 +9,7 @@ import static elford.james.codegen.test.Matchers.*;
 import org.junit.Test;
 
 import elford.james.codegen.TerminatingJavaCodeBlock;
+import elford.james.codegen.UnterminatedJavacodeBlock;
 import elford.james.codegen.tinytypes.CClassName;
 import elford.james.codegen.tinytypes.Identifier;
 
@@ -38,9 +39,31 @@ public class MethodBodyTests {
 		TerminatingJavaCodeBlock jcb = methodBody(
 				declare(x).as(CClassName.from("Foo")),
 				set(x).to(literal("new Foo()")),
-				_return(x.call("hello").withArguments(y, y))				
+				_return(x.call("hello").withArguments(y, y).terminate())				
 		);
 		
 		assertThat(jcb.representTerminating(), is(like("{ Foo x; x = new Foo(); return x.hello(y, y); }")));
+	}
+	
+	@Test
+	public void testCastStatements() {
+		Identifier x = new Identifier("x");
+		TerminatingJavaCodeBlock jcb = _return(cast(x).as(CClassName.from("String")));
+		assertThat(jcb.representTerminating(), is(like("return (String) x;")));
+	}
+	
+	@Test
+	public void testCastStatementUnterminating() {
+		Identifier x = new Identifier("x");
+		TerminatingJavaCodeBlock jcb = x.call("method").withArguments(cast(x).as(CClassName.from("Object")));
+		assertThat(jcb.representTerminating(), is(like("x.method((Object) x);")));
+	}
+	
+	@Test
+	public void testCastStatementWithTerminatingMethod() {
+		Identifier x = new Identifier("x");
+		TerminatingJavaCodeBlock jcb = cast(x.call("method").withArguments(cast(x).as(CClassName.from("Object"))).terminate())
+											.as(CClassName.from("String"));
+		assertThat(jcb.representTerminating(), is(like("(String) x.method((Object) x);")));
 	}
 }

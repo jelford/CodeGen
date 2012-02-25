@@ -40,5 +40,9 @@ public class MethodInvokation implements TerminatingJavaCodeBlock,
 	public String representTerminating() {
 		return this.representUnterminating() + ";";
 	}
+	
+	public TerminatingJavaCodeBlock terminate() {
+		return this;
+	}
 
 }

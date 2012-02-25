@@ -11,12 +11,12 @@ public class JavaReturnStatement implements TerminatingJavaCodeBlock {
 	}
 
 	/* Allow a special case for identifiers, which can be trivially terminated */
-	public JavaReturnStatement(final Identifier identifier) {
+	public JavaReturnStatement(final UnterminatedJavacodeBlock ujcb) {
 		this.expression = new TerminatingJavaCodeBlock() {
 			
 			@Override
 			public String representTerminating() {
-				return identifier.representUnterminating() + ";";
+				return ujcb.representUnterminating() + ";";
 			}
 		};
 	}
