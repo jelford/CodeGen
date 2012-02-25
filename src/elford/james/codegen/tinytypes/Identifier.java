@@ -1,10 +1,9 @@
 package elford.james.codegen.tinytypes;
 
-import elford.james.codegen.methodcall.MethodArgument;
-import elford.james.codegen.methodcall.MethodInvocationBuilder;
-import elford.james.codegen.statements.MethodInvocationCodeBlockBuilder;
+import elford.james.codegen.UnterminatedJavacodeBlock;
 
-public class Identifier implements MethodArgument {
+
+public class Identifier implements UnterminatedJavacodeBlock {
 	String token;
 
 	public Identifier(String name) {
@@ -19,9 +18,10 @@ public class Identifier implements MethodArgument {
 	public String toString() {
 		return this.token;
 	}
-	
+
 	@Override
-	public String asArgument(MethodInvocationBuilder builder) {
-		return builder.representArgument(this);
+	public String representUnterminating() {
+		return this.toString();
 	}
+	
 }
