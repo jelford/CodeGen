@@ -35,7 +35,7 @@ public class JavaLanguage {
 	}
 	
 	public static UnterminatedJavacodeBlock literal(Object value) {
-		return new RawUnterminatedJavaCodeBlock(value.toString());
+		return new RawUnterminatedJavaCodeBlock((value != null) ? value.toString() : "null");
 	}
 	
 	

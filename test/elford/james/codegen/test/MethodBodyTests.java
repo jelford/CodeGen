@@ -77,4 +77,10 @@ public class MethodBodyTests {
 		UnterminatedJavacodeBlock ujcb = array().ofType(CClassName.from("Object")).containing(_this(), methodArguments(from(2).to(5)));
 		assertThat(ujcb.representUnterminating(), is(like("new Object[] { #0, #2, #3, #4 }")));
 	}
+	
+	@Test
+	public void testCanReturnNull() {
+		TerminatingJavaCodeBlock jcb = _return(literal(null));
+		assertThat(jcb.representTerminating(), is(like("return null;")));
+	}
 }
