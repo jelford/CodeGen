@@ -1,5 +1,6 @@
 package elford.james.codegen;
 
+import elford.james.codegen.Range.RangeBuilder;
 import elford.james.codegen.tinytypes.ClassName;
 import elford.james.codegen.tinytypes.Identifier;
 
@@ -99,6 +100,49 @@ public class JavaLanguage {
 	
 	public static EmptyMethodArgument noArgument() {
 		return new EmptyMethodArgument();
+	}
+	
+	public static UnterminatedJavacodeBlock methodArguments(int ... arguments) {
+		StringBuilder sb = new StringBuilder();
+		int i=0;
+		while (i<arguments.length) {
+			sb.append("#");
+			sb.append(Integer.toString(arguments[i]));
+			if (++i < arguments.length)
+				sb.append(", ");
+		}
+		
+		final String argsList = sb.toString();
+		return new UnterminatedJavacodeBlock() {
+			
+			@Override
+			public String representUnterminating() {
+				return argsList;
+			}
+		};
+	}
+	
+	public static UnterminatedJavacodeBlock methodArguments(Range range) {
+		int size = range.to - range.from;
+		int[] args = new int[size];
+		for (int i=0; i < size; ++i) {
+			args[i] = i+range.from;
+		}
+		return methodArguments(args);
+	}
+	
+	public static UnterminatedJavacodeBlock _this() {
+		return new UnterminatedJavacodeBlock() {
+			
+			@Override
+			public String representUnterminating() {
+				return "#0";
+			}
+		};
+	}
+	
+	public static RangeBuilder from(int from) {
+		return Range.from(from);
 	}
 	
 	public static JavaTerminatingCastExpressionBuilder cast(TerminatingJavaCodeBlock jcb) {

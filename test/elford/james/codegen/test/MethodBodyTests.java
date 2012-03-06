@@ -1,7 +1,6 @@
 package elford.james.codegen.test;
 
 import static elford.james.codegen.JavaLanguage.*;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static elford.james.codegen.test.Matchers.*;
@@ -65,5 +64,17 @@ public class MethodBodyTests {
 		TerminatingJavaCodeBlock jcb = cast(x.call("method").withArguments(cast(x).as(CClassName.from("Object"))).terminate())
 											.as(CClassName.from("String"));
 		assertThat(jcb.representTerminating(), is(like("(String) x.method((Object) x);")));
+	}
+	
+	@Test
+	public void testCanGetMethodArguments() {
+		UnterminatedJavacodeBlock ujcb = array().ofType(CClassName.from("Object")).containing(methodArguments(1,2,3));
+		assertThat(ujcb.representUnterminating(), is(like("new Object[] { #1, #2, #3 }")));
+	}
+	
+	@Test
+	public void testCanUseConvenienceMethodArgumentsHelper() {
+		UnterminatedJavacodeBlock ujcb = array().ofType(CClassName.from("Object")).containing(_this(), methodArguments(from(2).to(5)));
+		assertThat(ujcb.representUnterminating(), is(like("new Object[] { #0, #2, #3, #4 }")));
 	}
 }
