@@ -70,13 +70,13 @@ public class MethodBodyTests {
 	@Test
 	public void testCanGetMethodArguments() {
 		UnterminatedJavacodeBlock ujcb = array().ofType(CClassName.from("Object")).containing(methodArguments(1,2,3));
-		assertThat(ujcb.representUnterminating(), is(like("new Object[] { #1, #2, #3 }")));
+		assertThat(ujcb.representUnterminating(), is(like("new Object[] { $1, $2, $3 }")));
 	}
 	
 	@Test
 	public void testCanUseConvenienceMethodArgumentsHelper() {
 		UnterminatedJavacodeBlock ujcb = array().ofType(CClassName.from("Object")).containing(_this(), methodArguments(from(2).to(5)));
-		assertThat(ujcb.representUnterminating(), is(like("new Object[] { #0, #2, #3, #4 }")));
+		assertThat(ujcb.representUnterminating(), is(like("new Object[] { $0, $2, $3, $4 }")));
 	}
 	
 	@Test

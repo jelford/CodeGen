@@ -106,7 +106,7 @@ public class JavaLanguage {
 		StringBuilder sb = new StringBuilder();
 		int i=0;
 		while (i<arguments.length) {
-			sb.append("#");
+			sb.append("$");
 			sb.append(Integer.toString(arguments[i]));
 			if (++i < arguments.length)
 				sb.append(", ");
@@ -136,7 +136,7 @@ public class JavaLanguage {
 			
 			@Override
 			public String representUnterminating() {
-				return "#0";
+				return "$0";
 			}
 		};
 	}
