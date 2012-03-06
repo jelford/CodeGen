@@ -11,6 +11,7 @@ import elford.james.codegen.TerminatingJavaCodeBlock;
 import elford.james.codegen.UnterminatedJavacodeBlock;
 import elford.james.codegen.tinytypes.CClassName;
 import elford.james.codegen.tinytypes.Identifier;
+import elford.james.codegen.tinytypes.MethodInvokation;
 
 public class MethodBodyTests {
 
@@ -82,5 +83,18 @@ public class MethodBodyTests {
 	public void testCanReturnNull() {
 		TerminatingJavaCodeBlock jcb = _return(literal(null));
 		assertThat(jcb.representTerminating(), is(like("return null;")));
+	}
+	
+	@Test
+	public void testCanDoMethodInvokationWithEmptyArgsInTheMiddle() {
+		Identifier x = new Identifier("x");
+		MethodInvokation jcb = x.call("helloWorld").withArguments(literal(null));
+		assertThat(jcb.representTerminating(), is(like("x.helloWorld(null);")));
+		
+		jcb = x.call("helloWorld1").withArguments(literal(null), noArgument());
+		assertThat(jcb.representTerminating(), is(like("x.helloWorld1(null);")));
+		
+		jcb = x.call("helloWorld2").withArguments(literal(null), noArgument(), literal(null));
+		assertThat(jcb.representTerminating(), is(like("x.helloWorld2(null, null);")));
 	}
 }

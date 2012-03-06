@@ -1,5 +1,8 @@
 package elford.james.codegen.tinytypes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import elford.james.codegen.EmptyMethodArgument;
 import elford.james.codegen.TerminatingJavaCodeBlock;
 import elford.james.codegen.UnterminatedJavacodeBlock;
@@ -20,20 +23,32 @@ public class MethodInvokation implements TerminatingJavaCodeBlock,
 
 	@Override
 	public String representUnterminating() {
+		List<UnterminatedJavacodeBlock> strippedArgs = withoutNoArgEntries(args);
+		int count = strippedArgs.size();
 		StringBuilder sb = new StringBuilder(identifier.toString());
 		sb.append(".");
 		sb.append(methodName);
 		sb.append("(");
-		if (args != null) {
+		if (strippedArgs != null) {
 			int i = 0;
-			for (UnterminatedJavacodeBlock ujcb : args) {
+			for (UnterminatedJavacodeBlock ujcb : strippedArgs) {				
 				sb.append(ujcb.representUnterminating());
-				if (++i < args.length)
+				if (++i < count)
 					sb.append(", ");
 			}
 		}
 		sb.append(")");
 		return sb.toString();
+	}
+	
+	private List<UnterminatedJavacodeBlock> withoutNoArgEntries(
+			UnterminatedJavacodeBlock[] args) {
+		List<UnterminatedJavacodeBlock> stripped = new ArrayList<UnterminatedJavacodeBlock>(args.length);
+		for (int i=0; i<args.length; ++i) {
+			if (args[i].getClass() != EmptyMethodArgument.class)
+				stripped.add(args[i]);
+		}
+		return stripped;
 	}
 
 	@Override
